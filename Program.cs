@@ -2,13 +2,14 @@
 using CS_DB_Exercise.Infrastructures.Queries;
 using CS_DB_Exercise.Infrastructures.Contexts;
 using CS_DB_Exercise.Infrastructures.Entities;
+using Microsoft.EntityFrameworkCore;
 
 namespace CS_DB_Exercise;
 class Program
 {
     static void Main(string[] args)
     {
-        var accessor = new DepartementAccessor(new AppDbContext());
+        var accessor = new DepartmentAccessor(new AppDbContext());
         // すべての部署を取得する
         /*
         var departments = accessor.FindAll();
@@ -139,6 +140,7 @@ class Program
         }
         */
 
+        /*
         var departmentAccessor = new DepartementAccessor(new AppDbContext());
         Console.Write("部署Idを入力してください->");
         var deptId = int.Parse(Console.ReadLine());
@@ -148,14 +150,73 @@ class Program
             Console.WriteLine(employee);
             foreach(var e in employee.Employees)
             {
-            Console.WriteLine($"社員Id={e.Id} , 社員名={e.Name} , 部署Id={employee.Id}");
+            Console.WriteLine(e);
             }
         }
         else
         {
             Console.WriteLine($"{deptId}の部署は存在しませんでした");
         }
+        */
 
+        /*
+        var context = new AppDbContext();
+        var departmentAccessor = new DepartmentAccessor(context);
 
+        using var transaction = context.Database.BeginTransaction();
+        Console.WriteLine("トランザクションを開始しました。");
+
+        Console.Write("新しい部署名を入力してください->");
+        var name = Console.ReadLine();
+        var entity = new DepartmentEntity
+        {
+            Id = 0, // Idは自動採番されるため、0を指定する
+            Name = name
+        };
+        // Create()メソッドを使用して、departmentテーブルに新しい部署を登録する
+        var result = departmentAccessor.Create(entity);
+        Console.WriteLine($"新しい部署を登録しました: 部署Id={result.Id} , 部署名={result.Name}");
+
+        Console.Write("トランザクションをコミットしますか？ (y/n)->");
+        var input = Console.ReadLine();
+        if (input?.ToLower() == "y")
+        {
+            // トランザクションをコミットする
+            transaction.Commit();
+            Console.WriteLine("トランザクションをコミットしました。");
+        }
+        else
+        {
+            // トランザクションをロールバックする
+            transaction.Rollback();
+            Console.WriteLine("トランザクションをロールバックしました。");
+        }
+
+        // 登録した部署を含むすべての部署を取得して表示する
+        var departments = departmentAccessor.FindAll();
+        foreach (var department in departments)
+        {
+            Console.WriteLine($"部署Id={department.Id} , 部署名={department.Name}");
+        }
+        */
+
+        var employeeAccessor = new EmployeeAccessor(new AppDbContext());
+        Console.Write("社員名を入力してください->");
+        var name = Console.ReadLine();
+        // 入力された社員名を含む社員とその所属部署を取得する
+        var results = employeeAccessor.FindByNameContainsJoinDepartment(name!);
+        // 取得した結果がnullの場合は、該当する社員が存在しない旨を表示する
+        if (results == null)
+        {
+            Console.WriteLine($"{name}さんは、存在しません。");
+        }
+        else
+        {
+            // 取得した結果をループで回して、社員名と所属部署名を表示する
+            foreach (var result in results)
+            {
+                Console.WriteLine($"{name}さんは、{result.Department!.Name}に所属する社員です。");
+            }
+        }
     }
 }

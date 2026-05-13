@@ -72,4 +72,18 @@ public class EmployeeAccessor
             .Single();
         return employee;
     }
+
+    public List<EmployeeEntity> FindByNameContainsJoinDepartment(string name)
+    {
+        var employees =  _context.Employees
+            .Include(i => i.Department)
+            .Where(i => i.Name!.Contains(name))
+            .ToList();
+        if (employees.Count == 0)
+        {
+            return null;
+        }
+        return employees!;
+        
+    }
 }

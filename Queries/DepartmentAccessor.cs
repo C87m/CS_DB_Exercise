@@ -9,7 +9,7 @@ namespace CS_DB_Exercise.Infrastructures.Queries;
 /// <author>Fullness,Inc.</author>
 /// <date>2025-11-16</date>
 /// <version>1.0.0</version>
-public class DepartementAccessor
+public class DepartmentAccessor
 {
     //  アプリケーション用DbContext
     private readonly AppDbContext _context;
@@ -18,7 +18,7 @@ public class DepartementAccessor
     /// コンストラクタ
     /// </summary>
     /// <param name="context">アプリケーション用DbContext</param>
-    public DepartementAccessor(AppDbContext context)
+    public DepartmentAccessor(AppDbContext context)
     {
         _context = context;
     }
@@ -56,5 +56,12 @@ public class DepartementAccessor
             .Where(i => i.Id == id)
             .SingleOrDefault();
         return employee;
+    }
+
+    public DepartmentEntity Create(DepartmentEntity department)
+    {
+        var result = _context.Departments.Add(department);
+        _context.SaveChanges();
+        return result.Entity;
     }
 }
