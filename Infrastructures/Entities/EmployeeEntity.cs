@@ -14,11 +14,11 @@ namespace CS_DB_Exercise.Infrastructures.Entities
         public string? Name {get; set;}
 
         [Column("dept_id")]
-        public int Dept_Id {get; set;}
+        public int DeptId {get; set;}
 
         public override string ToString()
         {
-            return $"id = {Id} , name = {Name} , dept_id = {Dept_Id}";
+            return $"社員Id = {Id} , 社員名 = {Name} , 部署Id = {DeptId}";
         }
     }
 }
