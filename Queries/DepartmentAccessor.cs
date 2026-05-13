@@ -1,5 +1,6 @@
 using CS_DB_Exercise.Infrastructures.Entities;
 using CS_DB_Exercise.Infrastructures.Contexts;
+using Microsoft.EntityFrameworkCore;
 
 namespace CS_DB_Exercise.Infrastructures.Queries;
 /// <summary>
@@ -41,5 +42,19 @@ public class DepartementAccessor
         // Find()メソッドを使用して、指定した部署Idの部署を取得する
         var department = _context.Departments.Find(departmentId);
         return department;
+    }
+
+    public DepartmentEntity? FindByJoinEmployee(int id)
+    {
+        var result = _context.Departments.Find(id);
+        if(result == null)
+        {
+            return null;
+        }
+        var employee = _context.Departments
+            .Include(i => i.Employees)
+            .Where(i => i.Id == id)
+            .SingleOrDefault();
+        return employee;
     }
 }

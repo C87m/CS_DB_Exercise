@@ -107,6 +107,7 @@ class Program
         }
         */
 
+        /*
         var employeeAccessor = new EmployeeAccessor(new AppDbContext());
         Console.Write("社員Idを入力してください->");
         var id = int.Parse(Console.ReadLine()!);
@@ -119,6 +120,42 @@ class Program
         {
             Console.WriteLine($"{id}の社員は存在しないため削除できませんでした");
         }
+        */
+
+        /*
+        var employeeAccessor = new EmployeeAccessor(new AppDbContext());
+        Console.Write("社員名を入力してください->");
+        var name = Console.ReadLine()!;
+
+        var employee = employeeAccessor.FindByNameJoinDepartment(name);
+        if(employee != null)
+        {
+            Console.WriteLine(employee);
+            Console.WriteLine(employee.Department);
+        }
+        else
+        {
+            Console.WriteLine($"{name}の社員は存在しませんでした");
+        }
+        */
+
+        var departmentAccessor = new DepartementAccessor(new AppDbContext());
+        Console.Write("部署Idを入力してください->");
+        var deptId = int.Parse(Console.ReadLine());
+        var employee = departmentAccessor.FindByJoinEmployee(deptId);
+        if(employee != null)
+        {
+            Console.WriteLine(employee);
+            foreach(var e in employee.Employees)
+            {
+            Console.WriteLine($"社員Id={e.Id} , 社員名={e.Name} , 部署Id={employee.Id}");
+            }
+        }
+        else
+        {
+            Console.WriteLine($"{deptId}の部署は存在しませんでした");
+        }
+
 
     }
 }
