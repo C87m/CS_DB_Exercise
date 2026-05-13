@@ -1,0 +1,24 @@
+using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
+
+namespace CS_DB_Exercise.Infrastructures.Entities
+{
+    [Table("employee")]
+    public class EmployeeEntity
+    {
+        [Key]
+        [Column("id")]
+        public int Id {get; set;}
+
+        [Column("name")]
+        public string? Name {get; set;}
+
+        [Column("dept_id")]
+        public int Dept_Id {get; set;}
+
+        public override string ToString()
+        {
+            return $"id = {Id} , name = {Name} , dept_id = {Dept_Id}";
+        }
+    }
+}
